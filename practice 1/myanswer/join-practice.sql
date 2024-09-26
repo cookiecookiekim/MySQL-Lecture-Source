@@ -14,11 +14,11 @@ select
     ,e.SALARY
 from
 	employee e
-    join JOB j on j.JOB_CODE = e.OB_CODE
+    join JOB j on j.JOB_CODE = e.JOB_CODE
     join DEPARTMENT d on d.DEPT_ID = e.DEPT_CODE
     join LOCATION l on l.LOCAL_CODE = d.LOCATION_ID
 where
-	JOB_NAME like '대리' && LOCAL_NAME like 'ASIA%';
+	j.JOB_NAME = '대리' && l.LOCAL_NAME like 'ASIA%';
 	
 -- 2. 주민번호가 70년대 생이면서 성별이 여자이고, 
 --    성이 전씨인 직원들의 사원명, 주민번호, 부서명, 직급명을 조회하시오.
@@ -104,13 +104,13 @@ select -- 다시!
 	e.EMP_NAME
     ,j.JOB_NAME
     ,e.SALARY
-    ,s.MAX_SAL
+    ,e.SALARY * 12 + (e.SALARY * IFNULL (e.BONUS,0)) as '보너스 포함 연봉'
 from
 	employee e
     join job j on e.JOB_CODE = j.JOB_CODE
     join sal_grade s on e.SAL_LEVEL = s.SAL_LEVEL
 where
-	s.SAL_LEVEL < e.EMP_NAME;
+	s.MIN_SAL < e.SALARY;
 
 
 -- 8. 한국(KO)과 일본(JP)에 근무하는 직원들의 
