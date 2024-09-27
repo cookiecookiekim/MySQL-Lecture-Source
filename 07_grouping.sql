@@ -97,10 +97,4 @@ from
 group by
 	menu_price,
     category_code
-with rollup;
-
-    
-    
-    
-    
-    
+with rollup; -- 카테고리별로 더하고, 더한거에 총 합을 출력한다.

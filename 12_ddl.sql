@@ -145,3 +145,7 @@ select * from tb6; -- 초기화 확인, 그렇가면 ddl이 아니라 dml 아닌
 -- table drop하고 create하기 때문에 테이블 구조 자체를 변경한 것.
 -- truncate 시, 데이터 초기화 후 재생성(값이 아니라 구조)
 -- data에 영향을 미친 게 아니라 database에 영향을 미친 것.
+
+
+
+
