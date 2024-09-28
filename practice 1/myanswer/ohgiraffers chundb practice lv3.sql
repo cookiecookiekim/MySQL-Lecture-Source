@@ -167,7 +167,18 @@ where
 
 -- 13. 예체능 계열 과목 중 과목 담당교수를 한명도 배정받지 못한 과목을 찾아
 -- 그 과목 이름과 학과 이름을 출력하는 SQL 문장을 작성하시오.
-
+select -- 정답은 44rows인데 나는 49rows이다.. 뭐가 잘못됐나~~ 답이 잘못됐으면.. ^ㅠ^
+	 c.CLASS_NAME
+    ,d.DEPARTMENT_NAME
+from
+	TB_DEPARTMENT d
+    join
+    TB_STUDENT s on d.DEPARTMENT_NO = s.DEPARTMENT_NO
+    join
+    TB_CLASS c on d.DEPARTMENT_NO = c.DEPARTMENT_NO
+where
+	COACH_PROFESSOR_NO is null && CATEGORY = '예체능';
+    
 	
 
 select * from TB_DEPARTMENT; --  학과테이블
