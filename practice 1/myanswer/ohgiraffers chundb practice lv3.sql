@@ -179,7 +179,64 @@ from
 where
 	COACH_PROFESSOR_NO is null && CATEGORY = '예체능';
     
-	
+-- 14. 춘 기술대학교 서반아어학과 학생들의 지도교수를 게시하고자 한다.
+-- 학생이름과 지도교수 이름을 찾고 맡길 지도 교수가 없는 학생일 경우 "지도교수 미지정”으로 표시하도록 하는 SQL 문을 작성하시오. 
+-- 단, 출력헤더는 “학생이름”, “지도교수”로 표시하며 고학번 학생이 먼저 표시되도록 한다.
+select -- from 말고도 where나 셀렉트에 별칭 꼭 넣어주기!! (근데 답은 14rows인데 저는 13 나옵니다..)
+	   s.STUDENT_NAME AS '학생이름'
+      ,if(s.COACH_PROFESSOR_NO is not null, p.PROFESSOR_NAME, '지도교수 미지정') AS '지도교수'
+from
+	TB_PROFESSOR p
+    join
+    TB_STUDENT s on p.PROFESSOR_NO = s.COACH_PROFESSOR_NO
+    join
+	TB_DEPARTMENT d on p.DEPARTMENT_NO = d.DEPARTMENT_NO
+where
+	s.DEPARTMENT_NO = 020
+order by
+	ENTRANCE_DATE;
+
+-- 15. 휴학생이 아닌 학생 중 평점이 4.0 이상인 학생을 찾아 그 학생의 학번, 이름, 학과 이름, 평점을 출력하는 SQL 문을 작성하시오.
+select -- 저는 39rows가 나옵니다.. 답은 19 rows 입니다....
+	 s.STUDENT_NO as '학번'
+    ,s.STUDENT_NAME as '이름'
+    ,d.DEPARTMENT_NAME as '학과이름'
+    ,round(avg(g.POINT),1) as '평점'
+from
+	TB_STUDENT s
+    join
+    TB_GRADE g on s.STUDENT_NO = g.STUDENT_NO
+    join
+    TB_DEPARTMENT d on s.DEPARTMENT_NO = d.DEPARTMENT_NO
+where
+	s.ABSENCE_YN = 'N'
+group by
+	s.STUDENT_NO, s.STUDENT_NAME, d.DEPARTMENT_NAME
+having
+	round(avg(g.POINT),1) >= 4
+order by
+	s.STUDENT_NO;
+
+-- 16. 환경조경학과 전공과목들의 과목 별 평점을 파악할 수 있는 SQL 문을 작성하시오.
+select -- 정답!!
+	 c.CLASS_NO   
+    ,c.CLASS_NAME
+	,avg(POINT)
+from
+	TB_CLASS c
+    join
+    TB_GRADE g on c.CLASS_NO = g.CLASS_NO
+    join
+    TB_DEPARTMENT d on c.DEPARTMENT_NO = d.DEPARTMENT_NO
+where
+	d.DEPARTMENT_NAME = '환경조경학과' && CLASS_TYPE like '전공%'
+group by
+	c.CLASS_NO , c.CLASS_NAME;
+
+-- 17. 춘 기술대학교에 다니고 있는 최경희 학생과 같은 과 학생들의 이름과 주소를 출력하는 SQL 문을 작성하시오.
+
+
+
 
 select * from TB_DEPARTMENT; --  학과테이블
 select * from TB_STUDENT; -- 학생테이블
