@@ -234,9 +234,61 @@ group by
 	c.CLASS_NO , c.CLASS_NAME;
 
 -- 17. 춘 기술대학교에 다니고 있는 최경희 학생과 같은 과 학생들의 이름과 주소를 출력하는 SQL 문을 작성하시오.
+select
+	 STUDENT_NAME
+    ,STUDENT_ADDRESS
+from
+	TB_STUDENT
+where
+	DEPARTMENT_NO = (select
+						DEPARTMENT_NO
+					from
+						TB_STUDENT
+					where
+						STUDENT_NAME = '최경희')
+order by
+	STUDENT_NAME;
 
+-- 18. 국어국문학과에서 총 평점이 가장 높은 학생의 이름과 학번을 표시하는 SQL 문을 작성하시오.
+select
+	  s.STUDENT_NO
+     ,s.STUDENT_NAME
+from
+	TB_STUDENT s
+    join
+    TB_DEPARTMENT d on s.DEPARTMENT_NO = d.DEPARTMENT_NO
+	join
+    TB_GRADE g on s.STUDENT_NO = g.STUDENT_NO
+where
+	d.DEPARTMENT_NAME = '국어국문학과'
+group by
+	s.STUDENT_NO , s.STUDENT_NAME
+order by
+	AVG(g.POINT) desc
+LIMIT 1;
 
-
+-- 19 춘 기술대학교의 "환경조경학과"가 속한 같은 계열 학과들의 학과 별 전공과목 평점을 파악하기 위한 적절한 SQL 문을 찾아내시오.
+-- 단, 출력헤더는 "계열 학과명", "전공평점"으로 표시되도록 하고, 평점은 소수점 한 자리까지만 반올림하여 표시되도록 한다.
+select
+	 d.DEPARTMENT_NAME as '계열 학과명'
+    ,ROUND(avg(g.POINT),1) as '전공평점'
+from
+	TB_DEPARTMENT d 
+    join
+    TB_CLASS c on d.DEPARTMENT_NO = c.DEPARTMENT_NO
+    join
+    TB_GRADE g on c.CLASS_NO = g.CLASS_NO
+where
+	d.CATEGORY = (select
+					CATEGORY
+				from
+					TB_DEPARTMENT
+				where
+					DEPARTMENT_NAME = '환경조경학과')
+group by
+	d.DEPARTMENT_NAME
+order by
+	d.DEPARTMENT_NAME;
 
 select * from TB_DEPARTMENT; --  학과테이블
 select * from TB_STUDENT; -- 학생테이블
